@@ -1,0 +1,7 @@
+CloudManagement
+  How to update capacity limit example:
+    
+    
+    var cloudManagement = new global.CloudManagement();
+                                        //Cloud Account         //Datacenter/Region           //Resource      //new limit
+    cloudManagement.updateCapacityLimit('Hybrid Cloud East US', 'AWS Datacenter - us-east-1', 'Network_Count', 150);
