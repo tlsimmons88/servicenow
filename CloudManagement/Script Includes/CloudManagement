@@ -1,0 +1,41 @@
+var CloudManagement = Class.create();
+CloudManagement.prototype = {
+    initialize: function() {
+		
+    },
+	
+	updateCapacityLimit:  function(cloudAccountName, associatedDatacenterName, datacenterCpacityName, capacityLimit) {
+		try{
+			var cloudAccount = new global.CloudAccount();
+			var associatedDatacenters = new global.AssociatedDatacenter();
+			var datacenterCapacities = new global.DatacenterCapacity();
+			
+			var cloudAccountSysId = cloudAccount.getCloudAccountSysIdByName(cloudAccountName);
+
+			// 2 = Draft
+			cloudAccount.updateStatus(cloudAccountSysId, 2);
+			
+			var associatedDatacenterSysId = associatedDatacenters.getAssociatedDatacenterByCloudAccountSysIdAndName(cloudAccountSysId, associatedDatacenterName);
+			
+			var datacenterCpacity = datacenterCapacities.getDatacenterCapacitySysIdByAssociatedDatacenterSysIdAndCapacityName(associatedDatacenterSysId, datacenterCpacityName);
+			
+			datacenterCapacities.updateCapacityLimit(datacenterCpacity, capacityLimit);
+			
+			// 1 = Published
+			cloudAccount.updateStatus(cloudAccountSysId, 1);
+			
+			return true;
+			
+		} catch(ex) {
+			gs.error('Failed to update Capacity Limit on Cloud Account:  ' + cloudAccountName + 'on resource:  ' + resourceName
+			+ '\nMessage : ' + ex.message
+			+ '\nLineNumber :' + ex.lineNumber
+			+ '\nSourceName :' + ex.sourceName
+			+ '\nName: ' + ex.name);
+			
+			return false;
+		  }
+	},
+
+    type: 'CloudManagement'
+};
