@@ -1,0 +1,31 @@
+var AssociatedDatacenter = Class.create();
+AssociatedDatacenter.prototype = {
+    initialize: function() {
+		
+    },
+	
+	getAssociatedDatacenterByCloudAccountSysIdAndName:  function(cloudAccountSysId, name){
+		try{
+			var grAssociatedDatacenter = new GlideRecord('sn_cmp_ca_assc_datacenter');
+            grAssociatedDatacenter.addQuery('cloud_account', cloudAccountSysId);
+			grAssociatedDatacenter.addQuery('alias', name);
+			grAssociatedDatacenter.setLimit(1);
+            grAssociatedDatacenter.query();
+            if (grAssociatedDatacenter.next()) {
+				return grAssociatedDatacenter.sys_id;
+            } else {
+				return false;
+			}
+		} catch(ex) {
+			gs.error('Failed to get Associated Datacenters SysId By CloudAccount '
+			+ '\nMessage : ' + ex.message
+			+ '\nLineNumber :' + ex.lineNumber
+			+ '\nSourceName :' + ex.sourceName
+			+ '\nName: ' + ex.name);
+			
+			return false;
+		  }
+	},
+
+    type: 'AssociatedDatacenter'
+};
