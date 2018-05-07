@@ -1,0 +1,54 @@
+var DatacenterCapacity = Class.create();
+DatacenterCapacity.prototype = {
+    initialize: function() {
+		
+    },
+	
+	getDatacenterCapacitySysIdByAssociatedDatacenterSysIdAndCapacityName: function(associatedDatacenterSysId, datacenterCapacityName) {
+		try{
+			var grDatacenterCapacity = new GlideRecord('sn_cmp_ca_assc_dc_quota_type');
+            grDatacenterCapacity.addQuery('associated_datacenter', associatedDatacenterSysId);
+			grDatacenterCapacity.addQuery('quota_type.name', datacenterCapacityName);
+			grDatacenterCapacity.setLimit(1);
+            grDatacenterCapacity.query();
+            if (grDatacenterCapacity.next()) {
+                return grDatacenterCapacity.sys_id;
+            } else {
+                return false;
+            }
+		} catch(ex) {
+			gs.error('Failed to get Datacente Capacity SysId By Associated Datacenter Sys Id:  ' + associatedDatacentersSysId + ' and Datacenter Cpacity Name:  ' + datacenterCpacityName
+			+ '\nMessage : ' + ex.message
+			+ '\nLineNumber :' + ex.lineNumber
+			+ '\nSourceName :' + ex.sourceName
+			+ '\nName: ' + ex.name);
+			
+			return false;
+		  }
+	},
+	
+	updateCapacityLimit:  function(sysId, capacityLimit) {
+		try{
+			var grDatacenterCapacity = new GlideRecord("sn_cmp_ca_assc_dc_quota_type");
+            grDatacenterCapacity.get(sysId);
+            grDatacenterCapacity.query();
+            if (grDatacenterCapacity.next()) {
+                grDatacenterCapacity.limit = capacityLimit;
+				grDatacenterCapacity.update();
+				return true;
+            } else {
+                return false;
+            }
+		} catch(ex) {
+			gs.error('Failed to update Capacity Limit on Datacenter Capacity of sys_id:  ' + sysId
+			+ '\nMessage : ' + ex.message
+			+ '\nLineNumber :' + ex.lineNumber
+			+ '\nSourceName :' + ex.sourceName
+			+ '\nName: ' + ex.name);
+			
+			return false;
+		  }
+	},
+
+    type: 'DatacenterCapacity'
+};
