@@ -3,6 +3,7 @@ __Update read-only form__
 g_form.setValue('nameOfField', 'valueYouWant');
 
 __Log an object example__
+
 gs.log('methodName() - ' + JSUtil.describeObject(variableName, 'someString'), 'SourceString');
 
 __Stop Discovery from changing the IP by class__
