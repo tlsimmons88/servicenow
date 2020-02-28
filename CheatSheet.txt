@@ -1,0 +1,40 @@
+Update read-only form
+g_form.setValue('nameOfField', 'valueYouWant');
+
+Log an object example
+gs.log('methodName() - ' + JSUtil.describeObject(variableName, 'someString'), 'SourceString');
+
+Stop Discovery from changing the IP by class
+	Add class name to this system property
+		Glide.discovery.exclude_ip_sync_classes
+			Script that uses this system property
+			/nav_to.do?uri=sys_script_include.do?sys_id=350895ad4a36231d00eb160120869c2e
+			
+OOB way to make relationships in sensor
+g_disco_functions.createRelationshipIfNotExists(parentCI, ci, 'Runs on::Runs');
+
+
+To load in data in a sensor where the server ci is a reference field on the table.  Example:  Network Adapters
+addToRelatedList()
+
+Call Script in query builder
+	Set query to:
+		Sys Id is one of 
+			javascript: new NameOfScriptInclude().NameOfMethod();
+			
+Don't update system fields (sys_updated_on)
+gr.autoSysFields(false);
+
+Check Length of Objects in an Object
+if(Object.getOwnPropertyNames(myObject).length > 0) { }
+
+Easy way to make List of Objects in Object
+if(!myObject.hasOwnProperty(sysIDVar)) {
+	myObject[sysIDVar] = {}
+}
+
+How to Control which fields are copied from Asset to CI
+alm_asset_ci_field_mapping
+
+How to Log in Discovery Pattern Eval
+ms.log("text"); 
