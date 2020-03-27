@@ -1,0 +1,283 @@
+How to Extend an OOTB pattern
+Go to this lab to see how
+	https://developer.servicenow.com/app.do#!/event/knowledge19/LAB1542
+Community resource
+	https://community.servicenow.com/community?id=community_article&sys_id=6866ef9cdb9d3b0422e0fb24399619c2
+
+How to Copy an existing Pattern
+	1. Create a new pattern
+	2. Add a discovery record to the identification Section but leave it blank with no steps
+	3. Go to the Pattern tab and copy the 'metadata' section of the payload to somewhere safe
+	4. Go to the Pattern you want to copy
+	5. Go to the Pattern tab and copy the entire json blob
+	6. Go the new pattern 
+	7. Go the Pattern tab and paste in the json blob
+	8. Gut the metadata section and replace it with the meta data you copied from step 3
+	9. Save the record
+	10. Start modifying steps as needed now
+		a. NOTE:  Updating shared libraries will effect everything
+		b. NOTE:  don't forget to update pre/post processing scripts as needed to support the copied pattern
+
+How to write a pattern
+How to Create Pattern Record
+	1. Create a local update set
+	2. Go Discovery -> Pattern Designer
+	3. Click New
+	4. Set pattern type
+		a. Infrastructure for CI Hardware
+		b. Application for Process classification
+	5. Set CI Type aka class
+	6. Set Name
+	7. Set Description
+	8. In Identification Section click New
+		a. In Pop Up 
+			i. Set Name to "discovery"
+			ii. Set Order  to 1
+	9. Click Save
+
+How to see Identifier Attributes in Pattern Designer
+	1. Open a pattern
+	2. Find the CI Attributes section on the top right section of the screen
+	3. Look at the list of attributes, any that have a key symbol in front of them must to populated for the discovery identifier to work
+
+How to Add Related List data to a pattern
+	1. On New Pattern page 
+		a. Click Discovery record at bottom of page to open Pattern Designer
+			i. Click 3 line button on far right in middle of page (very small button)
+				1) In Pop Up
+					a) Search for CI Class
+					b) Click it
+					c) Then click plus sign to add it to the list
+						i) Note:  Example video said you need to add two related list for it to work right
+					d) Click Ok
+				2) Now you should see Related List of ci classes in tabs on the far right going vertically.  These get added to a table called:  sa_ci_to_pattern
+					a) This table linked related list tables to patterns and controls deletions strategies 
+						i) Default Value for Deletion Strategy is Keep
+
+How to add Pre and Post Processing Scripts Support to a new Pattern
+NOTE:  Pre-Execution:  Lets you load in system properties to be used by pattern
+	  Pre-Sensor:  Lets you make changes to the data before the IRE is ran
+	  Post-Sensor:  Lets you make changes to the data after the IRE is ran
+	OOTB variable 'current' has been replaced with 'mainCI'
+	1. Go to Pattern Designer -> Pre Post Processing
+	2. Review OOTB Scripts and see if you need to add your class to one of them or not
+		a. Example
+			i. Network Devices - Pre Sensor
+				1) Controls adding model and manufacture to the cmdb
+	3. Update script with class/table name directly in script as needed
+	4. Go to Patterns field and add pattern here as well (does not inherit so you must add each child class)
+	5. Click Save
+
+How to add Library to a pattern
+	1. Open Pattern Designer for new pattern
+	2. Set Operation to Library Reference 
+		a. Example
+			i. SNMP Identity 
+				1) Get NIC info
+	3. Rename Step on the left side
+		a. Example
+			i. SNMP Identity Library
+		b. Changing any underlying steps in a library changes it for all patterns using the library.  BE CAREFUL
+
+How to add a New Step to a pattern
+	1. Click the add above or add below step button Next to the "Steps" word in the top left corn of the Pattern  Designer 
+	2. Give the Step a name
+		a. Example
+			i. GetName
+	3. Select what kind of step it is or action that is going to happen
+		a. Example
+			i. Under "Query" click SNMP Query
+			ii. Get SNMP OID value for sysName by looking at input from a previous discovery 
+			iii. Set SNMP OID field to that value
+			iv. Set Variables to sysName
+
+How to use Debug Mode in Pattern Designer
+	1. Click the Debug Mode button at the top of the screen
+	2. Give IP Address of test device
+	3. Click connect
+	4. Wait for it to finish
+	5. Now it will run any time you add a new step
+
+How to Set a value on a record in a pattern
+	1. Create a new step and name it
+	2. Click Set Parameter Value
+	3. Set Value
+		a. Drag temporary variable on right into the field
+			i. Example
+				1) sysName
+	4. Set Name
+		a. Drag CI attribute on the right (above Temporary Variables) into the field
+			i. Example
+				1) Name
+	5. Let debugger run
+	6. Verify value was set on the CI attribute on the far right
+
+How to use the SNMP MIB browser in a pattern 
+	1. Create a new step
+	2. Click SNMP Query
+	3. Find Use SNMP Browser
+	4. Click Browse button
+	5. In Pop Up
+		a. Click MIBs list and find the MIB you want to search/look at
+		b. Click through MIBs Tree until you find what you are looking for
+			i. Example
+				1) Expand system
+				2) Click Model
+				3) Click Get data button on bottom left to get value back from device
+		c. Click on the OID value inside the Node Detail section on the right
+		d. Click done
+			i. Should auto populate OID value into SNMP OID field
+			ii. Should auto populate Variables with property name from MIB
+	6. Click Test button in the top right of Pattern Designer to verify value for the attribute looks correct
+		
+How to alter or change a value in a pattern before it is set
+	1. Create a new step
+	2. Click Parse Variable
+	3. Set Enter Variable field by dragging variable we want to alter the value of from the Temporary Variables section on the right
+		a. Example
+			i. Model
+	4. Set Define Parsing
+		a. Example
+			i. Delimited Text
+	5. Click the Retrieve button to see the value show up in the Output section on the bottom left
+	6. Click Add Variable link/button in the middle on the right hand side in the Variables section
+	7. Rename the new variable to what you need
+		a. Example
+			i. NewModel
+	8. Set your Delimiters  by clicking the pencil button
+	9. In Pop Up
+		a. Add Text
+		b. Click plus sign button
+			i. Example
+				1) (
+				2) )
+		c. Click Done
+	10. Set position so it grabs the part of the text you want
+		a. Should see a color highlight appear over the text you are trying to grab in the output section on the left side of the screen
+	11. Now in a new step you can set an attribute on the ci record based on the variable name you made during the parsing step
+		a. Example
+			i. Create a new step
+			ii. Click Set Parameter Value
+			iii. Set the Value filed by finding your variable name in the Temporary Variables section and drag it to the field
+				1) In the example above it was NewModel
+			iv. Set Model
+				1) Following the example above it would model
+	
+						
+How to Hardcode a value in a pattern
+	1. Create a new step
+	2. Click Set Parameter Value
+	3. Set Value by putting Double Quotes around the value 
+	4. Set Name by dragging the CI attribute over from the top right side of the pattern designer
+
+How to create a record in a related list in a pattern
+	1. Create a new step
+	2. Click Parse Variable 
+	3. Set Enter Variable
+		a. Example
+			i. Serial Number
+	4. Click the Retrieve button to verify you get data back first
+	5. Set Define Parsing 
+		a. Example 
+			i. Delimited Text
+	6. In the Variable section on the right Click the Table radio button and give a temp table name
+		a. Example
+			i. TempSerial
+	7. Then click add variable and give it a name
+		a. NOTE:  try to match the name of the real attribute on the ci class
+		b. Example
+			i. Serial_number 
+	8. Set Position to 1
+	9. Create a new step
+	10. Click Transform Table
+	11. Set source field by dragging over the temp table variable you made above
+		a. Example
+			i. TempSerial
+	12. Set Target Field to the name of the table we want to have the record created in
+		a. NOTE:  Table name should start with a $
+		b. Example
+			i. $cmdb_serial_numbr
+	13. Set Target Field Nam
+		a. Example
+			i. serial_number
+			ii. serial_number_type
+			iii. valid
+	14. Set Value
+		a. Example
+			i. Drag and drop serial number from Temporary Variables
+			ii. "standard"
+				1) NOTE:  Hardcoded values are surrounded in double quotes
+			iii. "true"
+
+How to build references or relationships in a pattern 
+Create a reference 
+	1. Create a new step
+	2. Click Create Relation/Reference 
+	3. Set Parent table
+		a. NOTE:  Table name must start with $
+		b. Table that has a reference field on it you want to set/populate
+			i. Example
+				1) $cmdb_ci_serial_number
+	4. Set Child table
+		a. NOTE:  Table name must start with $
+		b. Table that you want to reference on the parent
+			i. Example
+				1) Class you are trying to populate with discovery
+	5. Set Result table
+		a. Put a human readable name that is a fake table/placeholder 
+	6. Set Relation type to None
+	7. Click o Reference checkbox to put a check mark
+	8. Set Direction
+		a. Parent to Child means the reference field is on the parent table above
+		b. Child to Parent means the reference field is on the child table above
+	9. Set Column Name
+		a. Name of reference filed you are trying ot set on the parent table
+	10. Make sure this reference is always made when valid and removed with there is no match
+		a. Set Creation Criteria to Condition
+		b. Set Meet to Any
+		c. Set Filter to 
+			i. 1 Equal 1
+				1) NOTE:  Basically always true
+		d. Set Unmatched Values to Remove
+	11. Let Debugger run
+	12. Click related list tab on the top right side that run vertically under CI attributes and verify data is populated
+Create a relationship
+	1. Create a new step
+	2. Click Create Relation/Reference 
+	3. Set Parent table
+		a. NOTE:  Table name must start with $
+		b. Table that has a reference field on it you want to set/populate
+			i. Example
+				1) Class you are trying to populate with discovery
+	4. Set Child table
+		a. NOTE:  Table name must start with $
+		b. Table that you want to reference on the parent
+			i. Example
+				1) $cmdb_ci_ip_address
+	5. Set Result table
+		a. Put a human readable name that is a fake table/placeholder 
+	6. Set Relation type 
+		a. Example
+			i. Owns::Owned By
+	7. Make sure this reference is always made when valid and removed with there is no match
+		a. Set Creation Criteria to Condition
+		b. Set Meet to Any
+		c. Set Filter to 
+			i. 1 Equal 1
+				1) NOTE:  Basically always true
+		d. Set Unmatched Values to Remove
+	
+How to save and publish pattern
+	1. Once all steps have been added and tested, click Save button in the top right corner of the Pattern Designer
+	2. Click Publish button to make it fully active to allow discovery to sue this version of it
+
+How to use a pattern via Discovery once it has been published
+	1. Go to the Classifier you want to use the pattern
+	2. Go to the Triggers Probes related list at the bottom
+	3. Click Edit button
+	4. Search for and add Horizontal Pattern
+	5. Click Save
+	6. In Triggers Probe Related list record update
+		a. Phase to Identification
+		b. Pattern to the new pattern you just made
+				
