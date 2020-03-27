@@ -62,3 +62,9 @@ __How to Log in Discovery Pattern Eval__
 ```javascript
 ms.log("text"); 
 ```
+
+__How to log a stacktrace in Service now__
+
+```javascript
+gs.log('***** DEBUG - ' + new Date().getTime() + ' - ' + current.sys_id + ' - \n' + GlideLog.getStackTrace(new Packages.java.lang.Throwable()), 'Stacktrace Debug');
+```
