@@ -1,0 +1,11 @@
+Application Patterns with a connection section are most like for service mapping
+
+"Find Process Strategy" runs before pattern to validate 
+	If pattern isn't running then may need to change the value in this column
+	
+You can create a powershell file for discovery        
+	Example:  Exchange Pattern
+	
+Multi-Line text needs an eval to do complex regex
+	Eval needs set parameter value as operation
+	command:  Eval()
