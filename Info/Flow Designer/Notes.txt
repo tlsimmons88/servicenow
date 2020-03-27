@@ -1,0 +1,77 @@
+FLOWS
+Flows consist of triggers and actions
+	Trigger - when to run
+Types of  Flows
+	Record
+	Schedule 
+	
+Flow process
+	Trigger is hit
+	System creates entry in the event queue
+	Schedule processes the event and starts the flow in the background
+	System build a process plan from the flow
+	System runs the plan on the record that triggered the flow
+	System stores the execution details in a context record 
+	
+Flow life cycle
+	New/Modified
+		Save it
+	Flow is in Draft mode
+		Activate it
+	Are Actions published?
+		If yes
+			Flow activates
+		If no
+			Publish actions
+			Then
+				Flow activates
+
+ACTIONS
+Actions are globally shared and can be used by more than 1 flow.  If you update an action all flows that use it will be updated (think of it like a public method)
+
+Actions can be in two states:
+	Draft
+	Published
+	
+Things you can do with an action
+	Save
+		Puts action in draft mode.  To see actions in draft mode "Show Draft Actions" must be turned on
+	Publish
+		Turns on the updated action for flows to use
+		
+Action Life Cycle
+	New/Modified
+		Save it
+	Draft Action
+		Publish it
+	Published Actions
+	
+TRIGGERS
+Run Trigger Options (only visible is trigger is create or updated  OR updated) 
+	Once
+	Always
+	
+	
+DATA PILLS
+Each time you add an action to a flow, Flow Designer adds a data pill to store its results.
+Can use those results as inputs to other actions
+Follows system driven naming convention
+
+Warning:  Data pills populate as soon as data is available not when they are hit in the process of the flow
+
+
+DEV WORK FLOW
+To Test before publishing set Show Draft Actions to true
+When dev complete and ready to publish do the following:
+	Publish each action
+	Set Show Draft Action to false
+	Publish Flow
+
+	
+Tables
+	Action status table
+		sys_hub_action_type_definition
+
+System Properties
+	To change the limit of how many actions can be in a flow (default 20)
+		sn_flow_designer.max_actions
