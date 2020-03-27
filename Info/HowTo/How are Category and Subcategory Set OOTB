@@ -1,0 +1,14 @@
+Probes and Sensors
+	• 'Applicationdependencymapping' script include is setting the category and subcategory values. This is hardcoded in the script include.
+		○ URL:  myINTANCENAME.service-now.com/nav_to.do?uri=sys_script_include.do?sys_id=445d60709733200010cb1bd74b2975a1
+		○ Lines in Script Include
+			agr.category = 'Resource';
+			agr.subcategory = 'Application';
+		
+Additionally a Business rule "SNC CMDB Category" would run when the current category value is nil on the "cmdb_ci" records. If it is nill, it would query for "cmdb_categories" table and update the category accordingly when there is an insert or update on the CI. But if there is no record in the cmdb_categories table for "x" class then category and subcategory do not get set
+
+Patterns
+ Business rule "SNC CMDB Category" would run when the current category value is nil on the "cmdb_ci" records. If it is nill, it would query for "cmdb_categories" table and update the category accordingly when there is an insert or update on the CI. But if there is no record in the cmdb_categories table for "x" class then category and subcategory do not get set
+
+Fix
+If we find more classes where these are not getting set then check the cmdb_categories table and add a new record for the class as needed
