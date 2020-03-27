@@ -1,0 +1,21 @@
+Phases - General
+	Identification
+		Shazam probe returns open ports
+			Shazam sensor parses the returned data to figure out open ports
+				Run classifier probes for open ports
+					Classifier probes returns device class
+						Classifier sensor runs to figure out which identifier probes to run
+							Run Identity Multi Probe
+								Identity Multi Sensor pares the data returned from the device
+									Sends the results to the identifier
+										Identifier quires the CMDB to see if there is a matching device
+	Exploration
+		Launches Multi Probe Exploration probes based on the results from the identification phase 
+    
+Phases - Application
+Overview Resource Link:  https://docs.servicenow.com/bundle/geneva-it-operations-management/page/product/discovery/concept/c_ProcessClassification.html
+Process classification:  https://docs.servicenow.com/bundle/geneva-it-operations-management/page/product/discovery/concept/c_ComputerCIClassification.html
+	CI Identified
+		Run Active Process Probe
+			Parse Probe results to see if there is a match for process handler to run the process script:  https://docs.servicenow.com/bundle/geneva-it-operations-management/page/product/discovery/concept/c_ProcessClassificationWorkflow.html
+
