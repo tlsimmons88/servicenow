@@ -1,0 +1,44 @@
+//Run in a script
+//Examples with no query filter
+var result = new DupeFinder().getListOfFieldValuesThatHaveDupes('cmdb_ci_db_mysql_instance', 'name');
+gs.log("TEMP:  " + result);
+
+var result = new DupeFinder().getListOfDupeRecordSysIdsByFieldName('cmdb_ci_db_mysql_instance', 'name');
+gs.log("TEMP:  " + result);
+
+var result = new DupeFinder().getListOfDupeRecordSysIdsReferencedByClassName('cmdb_ci_db_mysql_instance', 'name', 'change_request');
+gs.log("TEMP:  " + result);
+
+var result = new DupeFinder().getListOfDupeRecordSysIdsNotReferencedByClassName('cmdb_ci_db_mysql_instance', 'name', 'change_request');
+gs.log("TEMP:  " + result);
+
+
+//Examples with query filter
+var result = new DupeFinder().getListOfDupeRecordSysIdsByFieldName('cmdb_ci_db_mysql_instance', 'name', 'install_status!=7');
+gs.log("TEMP:  " + result);
+
+var result = new DupeFinder().getListOfDupeRecordSysIdsReferencedByClassName('cmdb_ci_db_mysql_instance', 'name', 'change_request', 'install_status!=7');
+gs.log("TEMP:  " + result);
+
+var result = new DupeFinder().getListOfDupeRecordSysIdsNotReferencedByClassName('cmdb_ci_db_mysql_instance', 'name', 'change_request', 'install_status!=7');
+gs.log("TEMP:  " + result);
+
+
+
+//Run in list view
+//Examples with no query filter
+javascript: new DupeFinder().getListOfFieldValuesThatHaveDupes('cmdb_ci_db_mysql_instance', 'name');
+
+javascript: new DupeFinder().getListOfDupeRecordSysIdsByFieldName('cmdb_ci_db_mysql_instance', 'name');
+
+javascript: new DupeFinder().getListOfDupeRecordSysIdsReferencedByClassName('cmdb_ci_db_mysql_instance', 'name', 'change_request');
+
+javascript: new DupeFinder().getListOfDupeRecordSysIdsNotReferencedByClassName('cmdb_ci_db_mysql_instance', 'name', 'change_request');
+
+
+//Examples with query filter
+javascript: new DupeFinder().getListOfDupeRecordSysIdsByFieldName('cmdb_ci_db_mysql_instance', 'name', 'install_status!=7');
+
+javascript: new DupeFinder().getListOfDupeRecordSysIdsReferencedByClassName('cmdb_ci_db_mysql_instance', 'name', 'change_request', 'install_status!=7');
+
+javascript: new DupeFinder().getListOfDupeRecordSysIdsNotReferencedByClassName('cmdb_ci_db_mysql_instance', 'name', 'change_request', 'install_status!=7');
