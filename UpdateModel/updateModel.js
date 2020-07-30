@@ -23,6 +23,8 @@ function updateAssetModel(oldSysId, newSysId, limit, dryRun) {
             grAsset.setLimit(limit);
         }
         grAsset.query();
+	    
+	gs.log("updateAssetModel():  Number of assets to update:  " + grAsset.getRowCount() + " that have bad model:  " + oldSysId, "Update Model");
         
         while(grAsset.next()) {
             grAsset.setValue('model', newSysId);
@@ -50,6 +52,8 @@ function updateCiModel(oldSysId, newSysId, limit, dryRun) {
             grCi.setLimit(limit);
         }
         grCi.query();
+	    
+	gs.log("updateCiModel():  Number of cis to update:  " + grCi.getRowCount() + " that have bad model:  " + oldSysId, "Update Model");
         
         while(grCi.next()) {
             grCi.setValue('model', newSysId);
@@ -77,6 +81,8 @@ function updateConsumableModel(oldSysId, newSysId, limit, dryRun) {
             grConsumable.setLimit(limit);
         }
         grConsumable.query();
+	    
+	gs.log("updateConsumableModel():  Number of consumable to update:  " + grConsumable.getRowCount() + "that have bad model:  " + oldSysId, "Update Model");
         
         while(grConsumable.next()) {
             grConsumable.setValue('model', newSysId);
