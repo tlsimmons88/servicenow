@@ -73,6 +73,7 @@ gs.log('***** DEBUG - ' + new Date().getTime() + ' - ' + current.sys_id + ' - \n
 __How to check if a string is in a string__
 ```javascript
 myString.indexOf('searchterm) > -1
+```
 
 
 __How to export excel with sys_id included__
