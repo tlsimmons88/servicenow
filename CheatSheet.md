@@ -68,3 +68,29 @@ __How to log a stacktrace in Service now__
 ```javascript
 gs.log('***** DEBUG - ' + new Date().getTime() + ' - ' + current.sys_id + ' - \n' + GlideLog.getStackTrace(new Packages.java.lang.Throwable()), 'Stacktrace Debug');
 ```
+
+
+__How to check if a string is in a string__
+```javascript
+myString.indexOf('searchterm) > -1
+
+
+__How to export excel with sys_id included__
+```javascript
+?EXCEL&sysparm_default_export_fields=all
+```
+
+
+__How to query all children class/table in the UI__
+```javascript
+Table is one of javascript:getTableExtensions('cmdb')
+```
+
+
+__How to get full table list of cmdb_ci classes__
+```javascript
+Go to: Table:  sys_db_object.
+Run:  Query:  nameSTARTSWITHcmdb_ci^ORsuper_class.nameSTARTSWITHcmdb_ci
+OR
+In Script:  gs.info(new global.TableUtils('cmdb_ci').getAllExtensions());
+```
