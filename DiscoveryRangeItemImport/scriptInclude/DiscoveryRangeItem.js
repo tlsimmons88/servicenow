@@ -42,6 +42,16 @@ Discovery_Range_Item_Transform.prototype = {
 				return false;
 			}
 			
+			//Check for valid types
+			if(this._isTypeValid() === false) {
+				return false;
+			}
+
+			//Check for valid Discovery Range parent record to see if it exists
+			if(this._isDiscoveryRangeNameValid() === false) {
+				return false;
+			}
+			
 			//Passed all validation checks
 			return true;
 		} catch (ex) {
@@ -341,6 +351,67 @@ Discovery_Range_Item_Transform.prototype = {
 					 + "\nName: " + ex.name, this.logSource);
 			return false;
 		}
+	},
+	
+	//Helper method to make sure the Discovery Range name passed in matches an existing record
+	_isDiscoveryRangeNameValid: function() {
+		try {
+			var grDiscoveryRange = new GlideRecord("discovery_range");
+			grDiscoveryRange.addQuery("active", true);
+			grDiscoveryRange.addQuery("name", this.discoveryRangeName);
+			grDiscoveryRange.query();
+
+			if(grDiscoveryRange.next()) {
+				return true;
+			}
+
+			var errorMessage = "";
+			errorMessage = "Error:  Could not find an active Discovery Range record on the table discovery_range with Discovery Range Name = " + this.discoveryRangeName + ".  Network Name = " + this.networkName;
+			this.source.setValue("sys_import_state_comment", errorMessage);
+			this.log.error(errorMessage);
+			if(this.debug) {
+				//gs.log is the only one that allows the source to be set, that is why we are using it instad of gs.warn or gs.error
+				gs.log(errorMessage, this.logSource);
+			}
+
+			return false;
+		} catch (ex) {
+			var errorMessage = "_isDiscoveryRangeNameValid():  Exception:  Failed to validate Discovery Range Name:  " + this.discoveryRangeName + " from the soruce table for Network Name: " + this.networkName + ".  "
+				+ "\nMessage : " + ex.message
+				+ "\nLineNumber : " + ex.lineNumber
+				+ "\nSourceName : " + ex.sourceName
+				+ "\nName: " + ex.name;
+			
+			this.log.error(errorMessage);
+			this.source.setValue("sys_import_state_comment", errorMessage);
+			if(this.debug) {
+				//gs.log is the only one that allows the source to be set, that is why we are using it instad of gs.warn or gs.error
+				gs.log(errorMessage, this.logSource);
+			}
+			
+			return false;
+		}
+	},
+
+	//Helper method to make sure the type passed in is a valid type
+	_isTypeValid: function() {
+		var errorMessage = "";
+
+		//Required for all imports
+		if(this.type != "ip address list" &&
+		   this.type != "ip address range" &&
+		   this.type != "ip network") {
+			errorMessage = "Error:  Type value is not valid.  Type = " + this.type + " Network Name = " + this.networkName;
+			this.source.setValue("sys_import_state_comment", errorMessage);
+			this.log.error(errorMessage);
+			if(this.debug) {
+				//gs.log is the only one that allows the source to be set, that is why we are using it instad of gs.warn or gs.error
+				gs.log(errorMessage, this.logSource);
+			}
+			
+			return false;
+		}
+		return true;
 	},
 	
 	//Helper method to get debug flag value from system property
