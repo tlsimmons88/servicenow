@@ -95,3 +95,11 @@ Run:  Query:  nameSTARTSWITHcmdb_ci^ORsuper_class.nameSTARTSWITHcmdb_ci
 OR
 In Script:  gs.info(new global.TableUtils('cmdb_ci').getAllExtensions());
 ```
+
+__How to sort number of records by the group by__
+```javascript
+append one of the two parameters to the URL:
+&sysparm_group_sort=COUNT
+&sysparm_group_sort=COUNTDESC
+```
+
